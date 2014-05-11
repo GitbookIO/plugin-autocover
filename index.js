@@ -24,7 +24,6 @@ var createCover = function(output, options) {
         }
     });
     options.font.size = options.font.size || (options.size.w/(options.title.length/2));
-    console.log(options);
 
     var canvas = new Canvas(options.size.w, options.size.h);
 
@@ -65,9 +64,11 @@ module.exports = {
             }
 
             // Generate cover
-            return createCover(_.extend({}, {
+            return createCover(
+            path.join(this.options.output, "book.jpg"),
+            _.extend({}, {
                 title: this.options.title
-            }, this.config.pluginsConfig.autocover));
+            }, this.options.pluginsConfig.autocover));
         }
     }
 };

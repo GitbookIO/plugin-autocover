@@ -6,6 +6,11 @@
     "engines": {
         "gitbook": "*"
     },
+    "dependencies": {
+        "canvas": "1.1.3",
+        "lodash": "2.4.1",
+        "q": "1.0.1"
+    },
     "homepage": "https://github.com/GitbookIO/plugin-autocover",
     "repository": {
         "type": "git",

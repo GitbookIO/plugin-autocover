@@ -1,4 +1,4 @@
-plugin-autocover
+Cover Generation for GitBook
 ================
 
-Generate a cover for the book
+Generate a cover for the book.

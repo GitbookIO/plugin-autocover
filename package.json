@@ -1,0 +1,18 @@
+{
+    "name": "gitbook-plugin-autocover",
+    "description": "Generate a cover for a gitbook",
+    "main": "index.js",
+    "version": "0.0.0",
+    "engines": {
+        "gitbook": "*"
+    },
+    "homepage": "https://github.com/GitbookIO/plugin-autocover",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/GitbookIO/plugin-autocover.git"
+    },
+    "license": "Apache 2",
+    "bugs": {
+        "url": "https://github.com/GitbookIO/plugin-autocover/issues"
+    }
+}

@@ -58,14 +58,14 @@ module.exports = {
     hooks: {
         "finish": function() {
             // Check if a cover already exists in the input
-            if (fs.existsSync(path.join(this.options.input, "book.jpg"))
-            || fs.existsSync(path.join(this.options.input, "book.png"))) {
+            if (fs.existsSync(path.join(this.options.input, "cover.jpg"))
+            || fs.existsSync(path.join(this.options.input, "cover.png"))) {
                 return;
             }
 
             // Generate cover
             return createCover(
-            path.join(this.options.output, "book.jpg"),
+            path.join(this.options.output, "cover.jpg"),
             _.extend({}, {
                 title: this.options.title
             }, this.options.pluginsConfig.autocover));

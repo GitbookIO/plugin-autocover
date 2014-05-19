@@ -16,8 +16,8 @@ var createCover = function(output, options) {
             "color": '#FFF'
         },
         "size": {
-            "w": 1600,
-            "h": 2400
+            "w": 1800,
+            "h": 2360
         },
         "background": {
             "color": '#09F'

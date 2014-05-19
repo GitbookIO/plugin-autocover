@@ -40,8 +40,8 @@ Here is default configuration of **autocover**, you can change it in your book.j
         "color": '#FFF'
     },
     "size": {
-        "w": 1600,
-        "h": 2400
+        "w": 1800,
+        "h": 2360
     },
     "background": {
         "color": '#09F'

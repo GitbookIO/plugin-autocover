@@ -41,7 +41,7 @@ var createCover = function(output, options) {
 
 
     var out = fs.createWriteStream(output);
-    var stream = canvas.createPNGStream();
+    var stream = canvas.createJPEGStream();
 
     stream.on('data', function(chunk){
         out.write(chunk);
@@ -53,22 +53,79 @@ var createCover = function(output, options) {
     return d.promise;
 };
 
+var resize = function(input, output, nSize) {
+    var d = Q.defer();
+
+    var img = new Canvas.Image();
+
+    img.onerror = function(err){
+        d.reject(err);
+    };
+
+    img.onload = function(){
+        console.log(img.width, img.height);
+
+        if (!nSize.height) nSize.height = (img.height*nSize.width)/img.width;
+
+        var canvas = new Canvas(nSize.width, nSize.height);
+        var ctx = canvas.getContext('2d');
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(img, 0, 0, nSize.width, nSize.height);
+
+        var out = fs.createWriteStream(output);
+        var stream = canvas.createJPEGStream();
+
+        stream.on('data', function(chunk){
+            out.write(chunk);
+        });
+        stream.on('end', function() {
+            d.resolve();
+        });
+    };
+
+    img.src = input;
+
+    return d.promise;
+};
+
 module.exports = {
     book: {},
     hooks: {
         "finish": function() {
-            // Check if a cover already exists in the input
-            if (fs.existsSync(path.join(this.options.input, "cover.jpg"))
-            || fs.existsSync(path.join(this.options.input, "cover.png"))) {
-                return;
-            }
+            var that = this;
 
-            // Generate cover
-            return createCover(
-            path.join(this.options.output, "cover.jpg"),
-            _.extend({}, {
-                title: this.options.title
-            }, this.options.pluginsConfig.autocover));
+            return Q()
+
+            // Generate big cover
+            .then(function() {
+                // Check if a cover already exists in the input
+                if (fs.existsSync(path.join(that.options.input, "cover.jpg"))) {
+                    return;
+                }
+
+                return createCover(
+                path.join(that.options.output, "cover.jpg"),
+                _.extend({}, {
+                    title: that.options.title
+                }, that.options.pluginsConfig.autocover));
+            })
+
+            // Generate small cover
+            .then(function() {
+                // Check if a cover already exists in the input
+                if (fs.existsSync(path.join(that.options.input, "cover_small.jpg"))) {
+                    return;
+                }
+
+                return resize(
+                    path.resolve(that.options.output, "cover.jpg"),
+                    path.join(that.options.output, "cover_small.jpg"),
+                    {
+                        width: 200
+                    }
+                );
+            });
         }
     }
 };

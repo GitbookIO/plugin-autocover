@@ -63,8 +63,6 @@ var resize = function(input, output, nSize) {
     };
 
     img.onload = function(){
-        console.log(img.width, img.height);
-
         if (!nSize.height) nSize.height = (img.height*nSize.width)/img.width;
 
         var canvas = new Canvas(nSize.width, nSize.height);
@@ -89,23 +87,49 @@ var resize = function(input, output, nSize) {
     return d.promise;
 };
 
+var copy = function(from, to) {
+    var d = Q.defer();
+    var f = fs.createReadStream(from);
+
+    f.on('end', function() {
+        d.resolve();
+    });
+
+    f.pipe(fs.createWriteStream(to));
+
+    return d.promise;
+};
+
 module.exports = {
     book: {},
     hooks: {
         "finish": function() {
             var that = this;
+            var multiLangs = that.options.langsSummary != null;
+
+            var inputDir = that.options.input;
+            var outputDir = that.options.output;
+
+            if (multiLangs) {
+                inputDir = path.resolve(inputDir, "..");
+                outputDir = path.resolve(outputDir, "..");
+            }
 
             return Q()
 
             // Generate big cover
             .then(function() {
                 // Check if a cover already exists in the input
-                if (fs.existsSync(path.join(that.options.input, "cover.jpg"))) {
-                    return;
+                if (fs.existsSync(path.join(inputDir, "cover.jpg"))) {
+                    // Copy this cover
+                    return copy(
+                        path.join(inputDir, "cover.jpg"),
+                        path.join(outputDir, "cover.jpg")
+                    );
                 }
 
                 return createCover(
-                path.join(that.options.output, "cover.jpg"),
+                path.join(outputDir, "cover.jpg"),
                 _.extend({}, {
                     title: that.options.title
                 }, that.options.pluginsConfig.autocover));
@@ -114,13 +138,17 @@ module.exports = {
             // Generate small cover
             .then(function() {
                 // Check if a cover already exists in the input
-                if (fs.existsSync(path.join(that.options.input, "cover_small.jpg"))) {
-                    return;
+                if (fs.existsSync(path.join(inputDir, "cover_small.jpg"))) {
+                    // Copy this cover
+                    return copy(
+                        path.join(inputDir, "cover_small.jpg"),
+                        path.join(outputDir, "cover_small.jpg")
+                    );
                 }
 
                 return resize(
-                    path.resolve(that.options.output, "cover.jpg"),
-                    path.join(that.options.output, "cover_small.jpg"),
+                    path.resolve(outputDir, "cover.jpg"),
+                    path.join(outputDir, "cover_small.jpg"),
                     {
                         width: 200
                     }

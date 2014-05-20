@@ -119,6 +119,9 @@ module.exports = {
 
             // Generate big cover
             .then(function() {
+                // Check if a cover already exists in the output
+                if (fs.existsSync(path.join(outputDir, "cover.jpg"))) return Q();
+
                 // Check if a cover already exists in the input
                 if (fs.existsSync(path.join(inputDir, "cover.jpg"))) {
                     // Copy this cover
@@ -137,6 +140,9 @@ module.exports = {
 
             // Generate small cover
             .then(function() {
+                // Check if a cover already exists in the output
+                if (fs.existsSync(path.join(outputDir, "cover_small.jpg"))) return Q();
+
                 // Check if a cover already exists in the input
                 if (fs.existsSync(path.join(inputDir, "cover_small.jpg"))) {
                     // Copy this cover
@@ -153,6 +159,12 @@ module.exports = {
                         width: 200
                     }
                 );
+            })
+
+            // Ignore error
+            .fail(function(err) {
+                console.log("Error with autocover: ", err.stack || err.message || err);
+                return Q();
             });
         }
     }

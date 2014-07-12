@@ -3,6 +3,10 @@ var fs = require('fs');
 var _ = require('lodash');
 var Canvas = require('canvas');
 
+var topics = require('./topic');
+var colors = require('./colors.json');
+
+
 function textsize(str, size, font) {
     // We only want the context to do our predictions
     var ctx = new Canvas().getContext('2d');
@@ -102,6 +106,21 @@ function drawPublished(ctx, options) {
     ctx.drawImage(img, options.size.w - img.width/1.5, options.size.h - img.height/1.5, img.width/1.5, img.height/1.5);
 }
 
+function drawColor(ctx, options) {
+    var _topics = topics(options.title);
+    var topic = _topics[0];
+
+    var color = (topic && colors[topic]) ? colors[topic] : colors.default;
+
+    var hx = options.size.w / 2;
+    var hy = options.size.h / 2;
+
+    var x = 900;
+    var y = 200;
+
+    ctx.fillStyle = color;
+    ctx.fillRect(hx-x/2, hy-y/2, x, y);
+}
 
 module.exports = function(output, options) {
     var d = Q.defer();
@@ -139,6 +158,9 @@ module.exports = function(output, options) {
 
     // Published with GitBook
     drawPublished(ctx, options);
+
+    // Draw the color (based on the detected topic)
+    drawColor(ctx, options);
 
     // Create streams
     var out = fs.createWriteStream(output);

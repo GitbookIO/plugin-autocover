@@ -30,6 +30,12 @@ module.exports = function topic(str) {
     return Object.keys(topics).filter(function(key) {
         var topicTokens = topics[key];
 
-        return doIntersect(tokens, topicTokens);
+        return (
+            // Exact match of topic name
+            tokens.indexOf(key) !== -1 ||
+
+            // Match of topic tokens
+            doIntersect(tokens, topicTokens)
+        );
     });
 };

@@ -2,56 +2,8 @@ var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
 var Q = require('q');
-var Canvas = require('canvas');
 
-var createCover = function(output, options) {
-    var d = Q.defer();
-
-    options = _.defaults(options || {}, {
-        "title": "My Book",
-        "author": "Author",
-        "font": {
-            "size": null,
-            "family": "Impact",
-            "color": '#FFF'
-        },
-        "size": {
-            "w": 1800,
-            "h": 2360
-        },
-        "background": {
-            "color": '#09F'
-        }
-    });
-    options.font.size = options.font.size || (options.size.w/(options.title.length/2));
-
-    var canvas = new Canvas(options.size.w, options.size.h);
-
-    var ctx = canvas.getContext('2d');
-
-    // Background
-    ctx.fillStyle = options.background.color;
-    ctx.fillRect(0, 0, options.size.w, options.size.h);
-
-    // Title
-    ctx.fillStyle = options.font.color;
-    ctx.font = options.font.size+"px "+options.font.family;
-    ctx.fillText(options.title, 50, options.font.size);
-
-
-
-    var out = fs.createWriteStream(output);
-    var stream = canvas.createJPEGStream();
-
-    stream.on('data', function(chunk){
-        out.write(chunk);
-    });
-    stream.on('end', function() {
-        d.resolve();
-    });
-
-    return d.promise;
-};
+var createCover = require('./draw');
 
 var resize = function(input, output, nSize) {
     var d = Q.defer();

@@ -3,6 +3,42 @@ var fs = require('fs');
 var _ = require('lodash');
 var Canvas = require('canvas');
 
+function textsize(str, size, font) {
+    // We only want the context to do our predictions
+    var ctx = new Canvas().getContext('2d');
+
+    // Set font
+    ctx.font = size+"px "+font;
+
+    // Get dimensions it would occupy
+    return ctx.measureText(str);
+}
+
+// Get the good font size for text to fit in a given width
+function fontSizeForWidth(str, font, width, lower, upper) {
+    // Lower and upper bounds for font
+    lower = (lower === undefined) ? 0 : lower;
+    upper = (upper === undefined) ? 120 : upper;
+
+    // The font size we're guessing with
+    var middle = Math.floor((upper + lower) / 2);
+
+    // Get text dimensions
+    var tsize = textsize(str, middle, font);
+
+    if(middle === lower) {
+        return middle;
+    }
+
+    return (
+        // Are we above or below ?
+        (tsize.width < width) ?
+        // Go up
+        fontSizeForWidth(str, font, width, middle, upper) :
+        // Go down
+        fontSizeForWidth(str, font, width, lower, middle)
+    );
+}
 
 module.exports = function(output, options) {
     var d = Q.defer();
@@ -23,7 +59,19 @@ module.exports = function(output, options) {
             "color": '#fff'
         }
     });
-    options.font.size = options.font.size || (options.size.w/(options.title.length/2));
+
+    var fsize = fontSizeForWidth(
+        options.title,
+        options.font.family,
+
+        // Cover width with some margin
+        Math.floor(options.size.w * 0.8),
+
+        0,
+        options.size.w
+    );
+
+    options.font.size = options.font.size || fsize;
 
     var canvas = new Canvas(options.size.w, options.size.h);
 
@@ -36,7 +84,14 @@ module.exports = function(output, options) {
     // Title
     ctx.fillStyle = options.font.color;
     ctx.font = options.font.size+"px "+options.font.family;
-    ctx.fillText(options.title, 50, options.font.size);
+    ctx.fillText(
+        // Title
+        options.title,
+        // Left Margin
+        Math.floor(options.size.w * 0.1),
+        // Top Margin
+        options.font.size
+    );
 
     var out = fs.createWriteStream(output);
     var stream = canvas.jpegStream();

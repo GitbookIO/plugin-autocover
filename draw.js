@@ -93,6 +93,13 @@ module.exports = function(output, options) {
         options.font.size
     );
 
+    // Published with GitBook
+    var pngData = fs.readFileSync(__dirname + '/published-with-gitbook.png');
+    img = new Canvas.Image();
+    img.src = pngData;
+    ctx.drawImage(img, options.size.w - img.width/1.5, options.size.h - img.height/1.5, img.width/1.5, img.height/1.5);
+
+
     var out = fs.createWriteStream(output);
     var stream = canvas.jpegStream();
 

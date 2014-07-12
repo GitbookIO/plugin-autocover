@@ -93,6 +93,29 @@ module.exports = function(output, options) {
         options.font.size
     );
 
+    var fasize = fontSizeForWidth(
+        options.author,
+        options.font.family,
+
+        // Cover width with some margin
+        Math.floor(options.size.w * 0.8) / 4,
+
+        0,
+        options.size.w
+    );
+
+    // Author
+    ctx.fillStyle = options.font.color;
+    ctx.font = fasize+"px "+options.font.family;
+    ctx.fillText(
+        // Title
+        options.author,
+        // Left Margin
+        Math.floor(options.size.w * 0.1),
+        // Top Margin
+        options.size.h * 0.9
+    );
+
     // Published with GitBook
     var pngData = fs.readFileSync(__dirname + '/published-with-gitbook.png');
     img = new Canvas.Image();

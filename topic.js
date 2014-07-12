@@ -2,7 +2,7 @@ var topics = require('./topics.json');
 
 // Break up the incomming text into tokens
 function tokenize(str) {
-    return str.toLowercase().split(/\s+/).filter(Boolean);
+    return str.toLowerCase().split(/\s+/).filter(Boolean);
 }
 
 // Intersection of two arrays

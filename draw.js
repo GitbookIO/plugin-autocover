@@ -40,26 +40,13 @@ function fontSizeForWidth(str, font, width, lower, upper) {
     );
 }
 
-module.exports = function(output, options) {
-    var d = Q.defer();
+function drawBackground(ctx, options) {
+    ctx.fillStyle = options.background.color;
+    ctx.fillRect(0, 0, options.size.w, options.size.h);
+}
 
-    options = _.defaults(options || {}, {
-        "title": "My Book",
-        "author": "Author",
-        "font": {
-            "size": null,
-            "family": "Arial",
-            "color": '#424242'
-        },
-        "size": {
-            "w": 1800,
-            "h": 2360
-        },
-        "background": {
-            "color": '#fff'
-        }
-    });
-
+function drawTitle(ctx, options) {
+    // Font size
     var fsize = fontSizeForWidth(
         options.title,
         options.font.family,
@@ -71,28 +58,19 @@ module.exports = function(output, options) {
         options.size.w
     );
 
-    options.font.size = options.font.size || fsize;
-
-    var canvas = new Canvas(options.size.w, options.size.h);
-
-    var ctx = canvas.getContext('2d');
-
-    // Background
-    ctx.fillStyle = options.background.color;
-    ctx.fillRect(0, 0, options.size.w, options.size.h);
-
-    // Title
     ctx.fillStyle = options.font.color;
-    ctx.font = options.font.size+"px "+options.font.family;
+    ctx.font = fsize+"px "+options.font.family;
     ctx.fillText(
         // Title
         options.title,
         // Left Margin
         Math.floor(options.size.w * 0.1),
         // Top Margin
-        options.font.size
+        fsize
     );
+}
 
+function drawAuthor(ctx, options) {
     var fasize = fontSizeForWidth(
         options.author,
         options.font.family,
@@ -115,19 +93,61 @@ module.exports = function(output, options) {
         // Top Margin
         options.size.h * 0.9
     );
+}
 
-    // Published with GitBook
+function drawPublished(ctx, options) {
     var pngData = fs.readFileSync(__dirname + '/published-with-gitbook.png');
     img = new Canvas.Image();
     img.src = pngData;
     ctx.drawImage(img, options.size.w - img.width/1.5, options.size.h - img.height/1.5, img.width/1.5, img.height/1.5);
+}
 
 
+module.exports = function(output, options) {
+    var d = Q.defer();
+
+    // Default options
+    options = _.defaults(options || {}, {
+        "title": "My Book",
+        "author": "Author",
+        "font": {
+            "size": null,
+            "family": "Arial",
+            "color": '#424242'
+        },
+        "size": {
+            "w": 1800,
+            "h": 2360
+        },
+        "background": {
+            "color": '#fff'
+        }
+    });
+
+    // Setup canvas & context
+    var canvas = new Canvas(options.size.w, options.size.h);
+    var ctx = canvas.getContext('2d');
+
+    // Background
+    drawBackground(ctx, options);
+
+    // Title
+    drawTitle(ctx, options);
+
+    // Author
+    drawAuthor(ctx, options);
+
+    // Published with GitBook
+    drawPublished(ctx, options);
+
+    // Create streams
     var out = fs.createWriteStream(output);
     var stream = canvas.jpegStream();
 
+    // Pipe
     stream.pipe(out);
 
+    // Wait till finished piping/writing
     stream.on('end', d.resolve);
 
     return d.promise;

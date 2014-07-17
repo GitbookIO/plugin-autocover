@@ -138,7 +138,7 @@ function drawColor(ctx, options) {
     var color = (topic && colors[topic]) ? colors[topic] : colors.default;
 
     var hx = options.size.w / 2;
-    var hy = options.size.h / 2;
+    var hy = options.size.h * 0.7;
 
     var x = 900;
     var y = 200;

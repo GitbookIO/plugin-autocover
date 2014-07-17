@@ -157,10 +157,28 @@ function drawAuthor(ctx, options) {
 }
 
 function drawPublished(ctx, options) {
+    var w = options.size.w;
+    var h = options.size.h;
+
+    // Get image
     var pngData = fs.readFileSync(__dirname + '/published-with-gitbook.png');
     img = new Canvas.Image();
     img.src = pngData;
-    ctx.drawImage(img, options.size.w - img.width/1.5, options.size.h - img.height/1.5, img.width/1.5, img.height/1.5);
+
+    var imgH = Math.floor(h * 0.15);
+    var imgW = Math.floor(img.width * (imgH / img.height));
+
+    ctx.drawImage(
+        img,
+        // Offset x
+        w - imgW * 1.1,
+        // Offset y
+        h - imgH * 1.2,
+        // Width
+        imgW,
+        // Height
+        imgH
+    );
 }
 
 function drawColor(ctx, options) {

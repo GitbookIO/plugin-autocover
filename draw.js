@@ -71,7 +71,7 @@ function drawTitle(ctx, options) {
     );
 
     var lines = parts
-    .reduce(function(lines, part, idx) {
+    .reduce(function(lines, part) {
         // First part
         if(lines.length === 0) {
             return [part];
@@ -97,7 +97,7 @@ function drawTitle(ctx, options) {
 
         // If sizes are the same, then merge parts to same line
         if(fsize == fsize2) {
-            lines[idx - 1] = newPart;
+            lines[lines.length - 1] = newPart;
             return lines;
         }
 

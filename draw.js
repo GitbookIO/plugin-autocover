@@ -62,7 +62,10 @@ function drawTitle(ctx, options) {
     var offset = Math.floor(options.size.h * 0.10);
 
     // Height allocated to each part
-    var partHeight = Math.floor((options.size.h * 0.6) / parts.length);
+    var partHeight = Math.min(
+        Math.floor((options.size.h * 0.6) / parts.length),
+        Math.floor(options.size.h * 0.1)
+    );
 
     // Font
     var font = options.font.family;

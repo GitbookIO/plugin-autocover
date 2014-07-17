@@ -56,7 +56,7 @@ function drawBackground(ctx, options) {
 
 function drawTitle(ctx, options) {
     // Words of title
-    var parts = options.title.split(/\W+/);
+    var parts = options.title.split(/\s+/);
 
     // Continuous top offset
     var offset = Math.floor(options.size.h * 0.10);

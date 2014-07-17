@@ -56,7 +56,7 @@ function drawBackground(ctx, options) {
 
 function drawTitle(ctx, options) {
     // Continuous top offset
-    var offset = Math.floor(options.size.h * 0.10);
+    var offset = Math.floor(options.size.h * 0.20);
 
     // Max width that text can take
     var maxWidth = Math.floor(options.size.w * 0.8);

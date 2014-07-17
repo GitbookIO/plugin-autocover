@@ -188,7 +188,7 @@ module.exports = function(output, options) {
     drawPublished(ctx, options);
 
     // Draw the color (based on the detected topic)
-    drawColor(ctx, options);
+    //drawColor(ctx, options);
 
     // Create streams
     var out = fs.createWriteStream(output);

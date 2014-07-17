@@ -27,7 +27,7 @@ function textsize(str, size, font) {
 function fontSizeForDimensions(str, font, width, height, lower, upper) {
     // Lower and upper bounds for font
     lower = (lower === undefined) ? 0 : lower;
-    upper = (upper === undefined) ? 120 : upper;
+    upper = (upper === undefined) ? 1000 : upper;
 
     // The font size we're guessing with
     var middle = Math.floor((upper + lower) / 2);
@@ -55,11 +55,14 @@ function drawBackground(ctx, options) {
 }
 
 function drawTitle(ctx, options) {
-    // Words of title
-    var parts = options.title.split(/\s+/);
-
     // Continuous top offset
     var offset = Math.floor(options.size.h * 0.10);
+
+    // Max width that text can take
+    var maxWidth = Math.floor(options.size.w * 0.8);
+
+    // Words of title
+    var parts = options.title.split(/\s+/);
 
     // Height allocated to each part
     var partHeight = Math.min(
@@ -67,25 +70,53 @@ function drawTitle(ctx, options) {
         Math.floor(options.size.h * 0.1)
     );
 
+    var lines = parts
+    .reduce(function(lines, part, idx) {
+        // First part
+        if(lines.length === 0) {
+            return [part];
+        }
+
+        // Last part
+        var prevPart = lines[lines.length - 1];
+        // Current part appended to last part
+        var newPart = prevPart + ' ' + part;
+
+        // Size of previous part by itself
+        var fsize = fontSizeForDimensions(
+            prevPart,
+            font, maxWidth, partHeight
+        );
+
+
+        // How big is it if we add our new part ?
+        var fsize2 = fontSizeForDimensions(
+            newPart,
+            font, maxWidth, partHeight
+        );
+
+        // If sizes are the same, then merge parts to same line
+        if(fsize == fsize2) {
+            lines[idx - 1] = newPart;
+            return lines;
+        }
+
+        return lines.concat(part);
+    }, []);
+
     // Font
     var font = options.font.family;
 
-    parts.forEach(function(part) {
+    lines.forEach(function(part) {
         // Font size
         var fsize = fontSizeForDimensions(
-            part,
-            font,
-
-            // Cover width with some margin
-            Math.floor(options.size.w * 0.8),
-            partHeight,
-
-            0,
-            options.size.w
+            part, font, maxWidth, partHeight
         );
 
+        // Text dimensions (width & height)
         var tdim = textsize(part, fsize, font);
 
+        // Draw text
         ctx.fillStyle = options.font.color;
         ctx.font = fsize+"px "+font;
         ctx.fillText(
@@ -97,6 +128,7 @@ function drawTitle(ctx, options) {
             offset
         );
 
+        // Increase offset
         offset += tdim.height;
     });
 }
@@ -108,10 +140,7 @@ function drawAuthor(ctx, options) {
 
         // Cover width with some margin
         Math.floor(options.size.w * 0.8) / 4,
-        100,
-
-        0,
-        options.size.w
+        100
     );
 
     // Author

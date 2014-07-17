@@ -19,7 +19,7 @@ function textsize(str, size, font) {
 }
 
 // Get the good font size for text to fit in a given width
-function fontSizeForWidth(str, font, width, lower, upper) {
+function fontSizeForDimensions(str, font, width, height, lower, upper) {
     // Lower and upper bounds for font
     lower = (lower === undefined) ? 0 : lower;
     upper = (upper === undefined) ? 120 : upper;
@@ -34,13 +34,15 @@ function fontSizeForWidth(str, font, width, lower, upper) {
         return middle;
     }
 
+    var theight = tsize.emHeightAscent + tsize.emHeightDescent;
+
     return (
         // Are we above or below ?
-        (tsize.width < width) ?
+        (tsize.width <= width && theight <= height) ?
         // Go up
-        fontSizeForWidth(str, font, width, middle, upper) :
+        fontSizeForDimensions(str, font, width, height, middle, upper) :
         // Go down
-        fontSizeForWidth(str, font, width, lower, middle)
+        fontSizeForDimensions(str, font, width, height, lower, middle)
     );
 }
 
@@ -51,12 +53,13 @@ function drawBackground(ctx, options) {
 
 function drawTitle(ctx, options) {
     // Font size
-    var fsize = fontSizeForWidth(
+    var fsize = fontSizeForDimensions(
         options.title,
         options.font.family,
 
         // Cover width with some margin
         Math.floor(options.size.w * 0.8),
+        1000,
 
         0,
         options.size.w
@@ -75,12 +78,13 @@ function drawTitle(ctx, options) {
 }
 
 function drawAuthor(ctx, options) {
-    var fasize = fontSizeForWidth(
+    var fasize = fontSizeForDimensions(
         options.author,
         options.font.family,
 
         // Cover width with some margin
         Math.floor(options.size.w * 0.8) / 4,
+        100,
 
         0,
         options.size.w

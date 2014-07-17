@@ -15,7 +15,12 @@ function textsize(str, size, font) {
     ctx.font = size+"px "+font;
 
     // Get dimensions it would occupy
-    return ctx.measureText(str);
+    var dim = ctx.measureText(str);
+
+    return {
+        width: dim.width,
+        height: dim.emHeightAscent + dim.emHeightDescent,
+    };
 }
 
 // Get the good font size for text to fit in a given width
@@ -34,11 +39,9 @@ function fontSizeForDimensions(str, font, width, height, lower, upper) {
         return middle;
     }
 
-    var theight = tsize.emHeightAscent + tsize.emHeightDescent;
-
     return (
         // Are we above or below ?
-        (tsize.width <= width && theight <= height) ?
+        (tsize.width <= width && tsize.height <= height) ?
         // Go up
         fontSizeForDimensions(str, font, width, height, middle, upper) :
         // Go down
@@ -52,29 +55,47 @@ function drawBackground(ctx, options) {
 }
 
 function drawTitle(ctx, options) {
-    // Font size
-    var fsize = fontSizeForDimensions(
-        options.title,
-        options.font.family,
+    // Words of title
+    var parts = options.title.split(/\W+/);
 
-        // Cover width with some margin
-        Math.floor(options.size.w * 0.8),
-        1000,
+    // Continuous top offset
+    var offset = Math.floor(options.size.h * 0.10);
 
-        0,
-        options.size.w
-    );
+    // Height allocated to each part
+    var partHeight = Math.floor((options.size.h * 0.6) / parts.length);
 
-    ctx.fillStyle = options.font.color;
-    ctx.font = fsize+"px "+options.font.family;
-    ctx.fillText(
-        // Title
-        options.title,
-        // Left Margin
-        Math.floor(options.size.w * 0.1),
-        // Top Margin
-        fsize
-    );
+    // Font
+    var font = options.font.family;
+
+    parts.forEach(function(part) {
+        // Font size
+        var fsize = fontSizeForDimensions(
+            part,
+            font,
+
+            // Cover width with some margin
+            Math.floor(options.size.w * 0.8),
+            partHeight,
+
+            0,
+            options.size.w
+        );
+
+        var tdim = textsize(part, fsize, font);
+
+        ctx.fillStyle = options.font.color;
+        ctx.font = fsize+"px "+font;
+        ctx.fillText(
+            // Part of title
+            part,
+            // Left Margin (center text)
+            Math.floor(options.size.w/2 - tdim.width/2),
+            // Top Margin
+            offset
+        );
+
+        offset += tdim.height;
+    });
 }
 
 function drawAuthor(ctx, options) {

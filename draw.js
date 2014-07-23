@@ -202,8 +202,8 @@ module.exports = function(output, options) {
 
     // Default options
     options = _.defaults(options || {}, {
-        "title": "My Book",
-        "author": "Author",
+        "title": "",
+        "author": "",
         "font": {
             "size": null,
             "family": "Arial",

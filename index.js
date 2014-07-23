@@ -86,7 +86,8 @@ module.exports = {
                 return createCover(
                 path.join(outputDir, "cover.jpg"),
                 _.extend({}, {
-                    title: that.options.title
+                    title: that.options.title,
+                    author: that.options.author
                 }, that.options.pluginsConfig.autocover));
             })
 

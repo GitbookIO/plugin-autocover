@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var _ = require('lodash');
 var Q = require('q');
+var Canvas = require('canvas');
 
 var createCover = require('./draw');
 

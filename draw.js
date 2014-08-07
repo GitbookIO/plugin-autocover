@@ -245,7 +245,8 @@ module.exports = function(output, options) {
     stream.pipe(out);
 
     // Wait till finished piping/writing
-    stream.on('end', d.resolve);
+    out.on('close', d.resolve);
+    out.on('error', d.reject);
 
     return d.promise;
 };

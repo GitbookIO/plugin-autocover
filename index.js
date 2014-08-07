@@ -35,7 +35,7 @@ var resize = function(input, output, nSize) {
         });
     };
 
-    img.src = fs.readFileSync(input);
+    img.src = input;
 
     return d.promise;
 };

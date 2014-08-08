@@ -42,13 +42,14 @@ var resize = function(input, output, nSize) {
 
 var copy = function(from, to) {
     var d = Q.defer();
-    var f = fs.createReadStream(from);
+    var r = fs.createReadStream(from);
+    var w = fs.createWriteStream(to);
 
-    f.on('end', function() {
-        d.resolve();
-    });
+    w.on('finish', d.resolve);
+    w.on('error', d.reject);
+    r.on('error', d.reject);
 
-    f.pipe(fs.createWriteStream(to));
+    r.pipe(w);
 
     return d.promise;
 };

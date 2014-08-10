@@ -35,7 +35,14 @@ var resize = function(input, output, nSize) {
         });
     };
 
-    img.src = input;
+    // WARNING:
+    // This is a hack to fix "Premature end of JPEG file" errors
+    // Basically that error happens because data isn't flushed to the disk
+    // By doing this setTimeout, we are forcing Node to go back to it's event loop
+    // where it finishes the I/O and flushes the data to disk
+    setTimeout(function() {
+        img.src = input;
+    }, 0);
 
     return d.promise;
 };

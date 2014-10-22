@@ -155,25 +155,6 @@ module.exports = function(output, options) {
 
 
     //
-    // Published with GitBook image
-    //
-
-    var static = require('node-static');
-    var file = new static.Server();
-
-    const port = 8080;
-
-    var server = require('http').createServer(function (request, response) {
-      request.addListener('end', function () {
-        file.serve(request, response);
-      }).resume();
-    }).listen(port);
-
-    options.autocover = options.autocover || {};
-    options.autocover.baseuri = options.autocover.baseuri || 'http://localhost:'+port;
-
-
-    //
     // Generate the cover
     //
 
@@ -191,8 +172,6 @@ module.exports = function(output, options) {
         ignoreAnimation: true,
         renderCallback: function()
         {
-          server.close();
-
           // Create streams
           var out = fs.createWriteStream(output);
           var stream = canvas.jpegStream();

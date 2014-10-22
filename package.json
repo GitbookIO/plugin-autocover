@@ -8,9 +8,8 @@
   },
   "dependencies": {
     "canvas": "1.1.6",
-    "canvg": "0.0.5",
+    "canvg": "ShareIt-project/node-canvg",
     "lodash": "2.4.1",
-    "node-static": "^0.7.6",
     "q": "1.0.1",
     "svg-templater": "^1.0.1"
   },

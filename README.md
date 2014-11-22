@@ -37,14 +37,14 @@ Here is default configuration of **autocover**, you can change it in your book.j
     "font": {
         "size": null,
         "family": "Impact",
-        "color": '#FFF'
+        "color": "#FFF"
     },
     "size": {
         "w": 1800,
         "h": 2360
     },
     "background": {
-        "color": '#09F'
+        "color": "#09F"
     }
 }
 ```

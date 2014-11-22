@@ -157,7 +157,9 @@ module.exports = function(output, options) {
 
     var d = Q.defer();
 
-    compileFromFile(options.template, options, function(error, data) {
+    var template = fs.existsSync('cover.svg') ? 'cover.svg' : options.template;
+
+    compileFromFile(template, options, function(error, data) {
       if(error) return d.reject(error);
 
       // Setup canvas & context

@@ -28,8 +28,8 @@ function textsize(str, size, font) {
 // Get the good font size for text to fit in a given width
 function fontSizeForDimensions(str, font, width, height, lower, upper) {
     // Lower and upper bounds for font
-    lower = (lower === undefined) ? 0 : lower;
-    upper = (upper === undefined) ? 1000 : upper;
+    lower = (lower === undefined) ? 0      : lower;
+    upper = (upper === undefined) ? height : upper;
 
     // The font size we're guessing with
     var middle = Math.floor((upper + lower) / 2);
@@ -92,20 +92,17 @@ module.exports = function(output, options) {
     // Max width that text can take
     var maxWidth = Math.floor(options.size.w * 0.8);
 
+    // Height allocated to each part
+    var maxLineHeight = Math.floor(options.size.h * 0.1);
+
     // Words of title
     var parts = options.title.split(/\s+/);
-
-    // Height allocated to each part
-    var partHeight = Math.min(
-        Math.floor((options.size.h * 0.6) / parts.length),
-        Math.floor(options.size.h * 0.1)
-    );
 
     options.title = parts.reduce(function(lines, part) {
         // First part
         if(lines.length === 0) return [part];
 
-        // Last part
+        // Last processed part
         var prevPart = lines[lines.length - 1];
         // Current part appended to last part
         var newPart = prevPart + ' ' + part;
@@ -113,17 +110,17 @@ module.exports = function(output, options) {
         // Size of previous part by itself
         var fsize = fontSizeForDimensions(
             prevPart,
-            options.font, maxWidth, partHeight
+            options.font, maxWidth, maxLineHeight
         );
 
         // How big is it if we add our new part ?
         var fsize2 = fontSizeForDimensions(
             newPart,
-            options.font, maxWidth, partHeight
+            options.font, maxWidth, maxLineHeight
         );
 
         // If sizes are the same, then merge parts to same line
-        if(fsize == fsize2) {
+        if(fsize == fsize2 && fsize2) {
             lines[lines.length - 1] = newPart;
             return lines;
         }
@@ -135,7 +132,11 @@ module.exports = function(output, options) {
     || Math.min.apply(Math, options.title.map(function(title)
     {
       return fontSizeForDimensions(
-        title, options.font.family, maxWidth, partHeight
+        title, options.font.family, maxWidth,
+        Math.min(
+          Math.floor(options.size.h * 0.6 / options.title.length),
+          maxLineHeight
+        )
       );
     }))
 
@@ -146,11 +147,7 @@ module.exports = function(output, options) {
 
     options.size.author = options.size.author || fontSizeForDimensions(
         options.author,
-        options.font.family,
-
-        // Cover width with some margin
-        Math.floor(options.size.w * 0.8) / 4,
-        100
+        options.font.family, maxWidth, options.size.h
     );
 
 

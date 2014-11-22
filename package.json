@@ -6,6 +6,9 @@
   "engines": {
     "gitbook": "*"
   },
+  "scripts": {
+    "test": "./test.js"
+  },
   "dependencies": {
     "canvas": "1.1.6",
     "canvg": "^0.0.6",

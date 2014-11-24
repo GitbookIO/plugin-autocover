@@ -64,7 +64,7 @@ var copy = function(from, to) {
 module.exports = {
     book: {},
     hooks: {
-        "finish": function() {
+        "finish:before": function() {
             var that = this;
             var multiLangs = that.options.langsSummary != null;
 

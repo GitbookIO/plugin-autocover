@@ -1,23 +1,28 @@
 {
-    "name": "gitbook-plugin-autocover",
-    "description": "Generate a cover for a gitbook",
-    "main": "index.js",
-    "version": "1.2.0",
-    "engines": {
-        "gitbook": "*"
-    },
-    "dependencies": {
-        "canvas": "1.1.6",
-        "lodash": "2.4.1",
-        "q": "1.0.1"
-    },
-    "homepage": "https://github.com/GitbookIO/plugin-autocover",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/GitbookIO/plugin-autocover.git"
-    },
-    "license": "Apache 2",
-    "bugs": {
-        "url": "https://github.com/GitbookIO/plugin-autocover/issues"
-    }
+  "name": "gitbook-plugin-autocover",
+  "description": "Generate a cover for a gitbook",
+  "main": "index.js",
+  "version": "1.2.0",
+  "engines": {
+    "gitbook": "*"
+  },
+  "scripts": {
+    "test": "./test.js"
+  },
+  "dependencies": {
+    "canvas": "1.1.6",
+    "canvg": "^0.0.6",
+    "lodash": "2.4.1",
+    "q": "1.0.1",
+    "svg-templater": "^1.0.1"
+  },
+  "homepage": "https://github.com/GitbookIO/plugin-autocover",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GitbookIO/plugin-autocover.git"
+  },
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/GitbookIO/plugin-autocover/issues"
+  }
 }

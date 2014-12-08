@@ -12,7 +12,7 @@ describe('title parts', function() {
             "Helvetica",
             // Boundary dimensions
             1800 * 0.8, // Width
-            2360 * 0.10 // Heigh
+            2360 * 0.1 // Heigh
         );
 
         console.log("parts =", parts);

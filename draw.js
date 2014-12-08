@@ -36,6 +36,9 @@ module.exports = function(output, options) {
     });
 
 
+    // Font
+    var fontname = options.font.family;
+
     //
     // Topic color
     //
@@ -59,7 +62,7 @@ module.exports = function(output, options) {
 
     var tParts = titleParts(
         options.title,
-        options.font,
+        fontname,
         titleBox.w,
         titleBox.h
     );
@@ -76,7 +79,7 @@ module.exports = function(output, options) {
     // Calculate title's default font size
     var defaultTitleSize = Math.min.apply(Math, options.title.map(function(part) {
         return fontSize(
-            part, options.font.family,
+            part, fontname,
             titleBox.w,
             lineHeight
         );
@@ -90,7 +93,7 @@ module.exports = function(output, options) {
     //
 
     options.size.author = options.size.author || fontSize(
-        options.author, options.font.family,
+        options.author, fontname,
         titleBox.w, options.size.h
     );
 

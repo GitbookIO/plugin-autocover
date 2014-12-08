@@ -7,7 +7,7 @@
         "gitbook": "*"
     },
     "scripts": {
-        "test": "./test.js"
+        "test": "mocha"
     },
     "dependencies": {
         "q": "1.0.1",

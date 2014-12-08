@@ -13,8 +13,7 @@
         "q": "1.0.1",
         "lodash": "2.4.1",
         "canvas": "1.1.6",
-        "canvg": "^0.0.6",
-        "svg-templater": "^1.0.1"
+        "canvg": "^0.0.6"
     },
     "homepage": "https://github.com/GitbookIO/plugin-autocover",
     "repository": {

@@ -75,8 +75,6 @@ module.exports = {
                     );
                 }
 
-                console.log('Will resize');
-
                 return resize(
                     path.resolve(outputDir, "cover.jpg"),
                     path.join(outputDir, "cover_small.jpg"),

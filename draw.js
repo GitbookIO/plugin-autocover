@@ -4,50 +4,10 @@ var _ = require('lodash');
 var Canvas = require('canvas');
 var compileFromFile = require('svg-templater').compileFromFile;
 var canvg = require("canvg");
+var fontSize = require('./lib/fontsize');
 
 var topics = require('./topic');
 var colors = require('./colors.json');
-
-
-function textsize(str, size, font) {
-    // We only want the context to do our predictions
-    var ctx = new Canvas().getContext('2d');
-
-    // Set font
-    ctx.font = size+"px "+font;
-
-    // Get dimensions it would occupy
-    var dim = ctx.measureText(str);
-
-    return {
-        width: dim.width,
-        height: dim.emHeightAscent + dim.emHeightDescent,
-    };
-}
-
-// Get the good font size for text to fit in a given width
-function fontSizeForDimensions(str, font, width, height, lower, upper) {
-    // Lower and upper bounds for font
-    lower = (lower === undefined) ? 0      : lower;
-    upper = (upper === undefined) ? height : upper;
-
-    // The font size we're guessing with
-    var middle = Math.floor((upper + lower) / 2);
-
-    if(middle === lower) return middle;
-
-    // Get text dimensions
-    var tsize = textsize(str, middle, font);
-
-    return (
-        // Are we above or below ?
-        (tsize.width <= width && tsize.height <= height) ?
-        // Go up
-        fontSizeForDimensions(str, font, width, height, middle, upper) :
-        // Go down
-        fontSizeForDimensions(str, font, width, height, lower, middle)
-    );
-}
 
 
 module.exports = function(output, options) {
@@ -108,13 +68,13 @@ module.exports = function(output, options) {
         var newPart = prevPart + ' ' + part;
 
         // Size of previous part by itself
-        var fsize = fontSizeForDimensions(
+        var fsize = fontSize(
             prevPart,
             options.font, maxWidth, maxLineHeight
         );
 
         // How big is it if we add our new part ?
-        var fsize2 = fontSizeForDimensions(
+        var fsize2 = fontSize(
             newPart,
             options.font, maxWidth, maxLineHeight
         );
@@ -128,24 +88,24 @@ module.exports = function(output, options) {
         return lines.concat(part);
     }, []);
 
-    options.size.title = options.size.title
-    || Math.min.apply(Math, options.title.map(function(title)
+    options.size.title = options.size.title ||
+    Math.min.apply(Math, options.title.map(function(title)
     {
-      return fontSizeForDimensions(
+      return fontSize(
         title, options.font.family, maxWidth,
         Math.min(
           Math.floor(options.size.h * 0.6 / options.title.length),
           maxLineHeight
         )
       );
-    }))
+    }));
 
 
     //
     // Author size
     //
 
-    options.size.author = options.size.author || fontSizeForDimensions(
+    options.size.author = options.size.author || fontSize(
         options.author,
         options.font.family, maxWidth, options.size.h
     );

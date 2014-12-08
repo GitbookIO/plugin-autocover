@@ -4,11 +4,12 @@ var _ = require('lodash');
 var Canvas = require('canvas');
 var compileFromFile = require('svg-templater').compileFromFile;
 var canvg = require("canvg");
+
 var fontSize = require('./lib/fontsize');
+var titleParts = require('./lib/titleparts');
 
 var topics = require('./topic');
 var colors = require('./colors.json');
-
 
 module.exports = function(output, options) {
 
@@ -49,65 +50,48 @@ module.exports = function(output, options) {
     // Title split in lines & size
     //
 
-    // Max width that text can take
-    var maxWidth = Math.floor(options.size.w * 0.8);
-
-    // Height allocated to each part
+    // Dimensions of title's box
+    var titleBox = {
+        w: Math.floor(options.size.w * 0.8),
+        h: Math.floor(options.size.h * 0.6),
+    };
     var maxLineHeight = Math.floor(options.size.h * 0.1);
 
-    // Words of title
-    var parts = options.title.split(/\s+/);
+    var tParts = titleParts(
+        options.title,
+        options.font,
+        titleBox.w,
+        titleBox.h
+    );
 
-    options.title = parts.reduce(function(lines, part) {
-        // First part
-        if(lines.length === 0) return [part];
+    // The height of an individual line
+    var lineHeight = Math.min(
+        Math.floor(titleBox.h / tParts.length),
+        maxLineHeight
+    );
 
-        // Last processed part
-        var prevPart = lines[lines.length - 1];
-        // Current part appended to last part
-        var newPart = prevPart + ' ' + part;
+    // Rewrite title to parts
+    options.title = tParts;
 
-        // Size of previous part by itself
-        var fsize = fontSize(
-            prevPart,
-            options.font, maxWidth, maxLineHeight
+    // Calculate title's default font size
+    var defaultTitleSize = Math.min.apply(Math, options.title.map(function(part) {
+        return fontSize(
+            part, options.font.family,
+            titleBox.w,
+            lineHeight
         );
-
-        // How big is it if we add our new part ?
-        var fsize2 = fontSize(
-            newPart,
-            options.font, maxWidth, maxLineHeight
-        );
-
-        // If sizes are the same, then merge parts to same line
-        if(fsize == fsize2 && fsize2) {
-            lines[lines.length - 1] = newPart;
-            return lines;
-        }
-
-        return lines.concat(part);
-    }, []);
-
-    options.size.title = options.size.title ||
-    Math.min.apply(Math, options.title.map(function(title)
-    {
-      return fontSize(
-        title, options.font.family, maxWidth,
-        Math.min(
-          Math.floor(options.size.h * 0.6 / options.title.length),
-          maxLineHeight
-        )
-      );
     }));
 
+    // Title size
+    options.size.title = options.size.title || defaultTitleSize;
 
     //
     // Author size
     //
 
     options.size.author = options.size.author || fontSize(
-        options.author,
-        options.font.family, maxWidth, options.size.h
+        options.author, options.font.family,
+        titleBox.w, options.size.h
     );
 
 

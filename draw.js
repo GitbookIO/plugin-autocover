@@ -27,7 +27,8 @@ module.exports = function(output, options) {
             "family": "Arial",
             "color": '#424242'
         },
-        "template": "templates/default.svg",
+        "template": path.join(__dirname, "templates/default.svg"),
+        "watermark": path.join(__dirname, "published-with-gitbook.png"),
         "size": {
             "w": 1800,
             "h": 2360

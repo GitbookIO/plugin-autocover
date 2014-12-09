@@ -28,7 +28,7 @@ module.exports = function(output, options) {
             "color": '#424242'
         },
         "template": path.join(__dirname, "templates/default.svg"),
-        "watermark": path.join(__dirname, "published-with-gitbook.png"),
+        "watermark": path.join(__dirname, "published-with-gitbook.svg"),
         "size": {
             "w": 1800,
             "h": 2360

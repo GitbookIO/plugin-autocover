@@ -31,7 +31,7 @@
     font-size="<%= size.author / 4 %>"><%= author %></text>
 
   <image
-    xlink:href="./published-with-gitbook.png"
+    xlink:href="<%= watermark %>"
     x="90%" y="90%" width="25%" height="25%"
     transform="translate(-490,-320)"/>
 

@@ -1,6 +1,9 @@
 var Q = require('q');
 var fs = require('fs');
+var path = require('path');
 var _ = require('lodash');
+
+var geopattern = require('geopattern');
 
 var fontSize = require('./lib/fontsize');
 var titleParts = require('./lib/titleparts');
@@ -46,6 +49,15 @@ module.exports = function(output, options) {
 
     options.topic = options.topic || {};
     options.topic.color = (topic && colors[topic]) ? colors[topic] : colors.default;
+
+
+    //
+    // Add pattern helper
+    //
+    var pattern = geopattern.generate(options.title);
+    options.pattern = pattern;
+    options.pattern_width = pattern.svg.svg.attributes.width;
+    options.pattern_height = pattern.svg.svg.attributes.height;
 
 
     //

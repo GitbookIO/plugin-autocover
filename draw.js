@@ -1,8 +1,6 @@
 var Q = require('q');
 var fs = require('fs');
 var _ = require('lodash');
-var Canvas = require('canvas');
-var canvg = require("canvg");
 
 var fontSize = require('./lib/fontsize');
 var titleParts = require('./lib/titleparts');

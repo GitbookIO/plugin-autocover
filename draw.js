@@ -10,8 +10,8 @@ var titleParts = require('./lib/titleparts');
 var svgCompile = require('./lib/svgcompile');
 var svgRender = require('./lib/svgrender');
 
-var topics = require('./topic');
-var colors = require('./colors.json');
+var topics = require('./lib/topic/');
+var colors = require('./lib/topic/colors.json');
 
 module.exports = function(output, options) {
 

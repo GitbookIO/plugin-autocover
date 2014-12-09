@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var draw = require('./draw');
 
 draw('./test.jpeg', {

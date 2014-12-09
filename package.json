@@ -6,10 +6,18 @@
     "engines": {
         "gitbook": "*"
     },
+    "scripts": {
+        "test": "mocha"
+    },
     "dependencies": {
-        "canvas": "1.1.6",
+        "q": "1.0.1",
         "lodash": "2.4.1",
-        "q": "1.0.1"
+        "canvas": "1.1.6",
+        "canvg": "^0.0.6",
+        "geopattern": "1.2.3"
+    },
+    "devDependencies": {
+        "mocha": "*"
     },
     "homepage": "https://github.com/GitbookIO/plugin-autocover",
     "repository": {

@@ -2,7 +2,6 @@ var Q = require('q');
 var fs = require('fs');
 var _ = require('lodash');
 var Canvas = require('canvas');
-var compileFromFile = require('svg-templater').compileFromFile;
 var canvg = require("canvg");
 
 var fontSize = require('./lib/fontsize');

@@ -1,7 +1,7 @@
 {
     "name": "gitbook-plugin-autocover",
     "description": "Generate a cover for a gitbook",
-    "main": "index.js",
+    "main": "./lib/index.js",
     "version": "1.2.1",
     "engines": {
         "gitbook": "*"
@@ -17,7 +17,7 @@
         "geopattern": "1.2.3"
     },
     "devDependencies": {
-        "mocha": "*"
+        "mocha": "2.3.3"
     },
     "homepage": "https://github.com/GitbookIO/plugin-autocover",
     "repository": {

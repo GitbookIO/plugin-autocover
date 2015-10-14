@@ -1,7 +1,5 @@
 var assert = require('assert');
-
 var titleParts = require('../lib/titleparts');
-
 
 describe('title parts', function() {
     it('should split and group across lines', function() {
@@ -18,3 +16,4 @@ describe('title parts', function() {
         assert.equal(parts.length, 3, "Title should be split across 4 lines");
     });
 });
+

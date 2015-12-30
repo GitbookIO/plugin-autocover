@@ -10,11 +10,11 @@
         "test": "mocha"
     },
     "dependencies": {
-        "q": "1.0.1",
-        "lodash": "2.4.1",
-        "canvas": "1.1.6",
-        "canvg": "^0.0.6",
-        "geopattern": "1.2.3"
+        "q": "^1.4.1",
+        "lodash": "^3.10.1",
+        "canvas": "^1.3.5",
+        "canvg": "^0.0.8",
+        "geopattern": "^1.2.3"
     },
     "devDependencies": {
         "mocha": "*"

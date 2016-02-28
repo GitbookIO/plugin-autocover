@@ -10,7 +10,7 @@
         "test": "mocha"
     },
     "dependencies": {
-        "q": "1.0.1",
+        "q": "^1.2.0",
         "lodash": "^3.10.0",
         "canvas": "1.2.10",
         "canvg": "^0.0.6",
@@ -24,7 +24,7 @@
         "type": "git",
         "url": "https://github.com/GitbookIO/plugin-autocover.git"
     },
-    "license": "Apache 2",
+    "license": "Apache-2.0",
     "bugs": {
         "url": "https://github.com/GitbookIO/plugin-autocover/issues"
     }

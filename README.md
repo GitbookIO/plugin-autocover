@@ -3,19 +3,11 @@ Cover Generation for GitBook
 
 Generate a cover for the book.
 
-## Installation
-
-```
-$ npm install gitbook-plugin-autocover
-```
-
-This module use [node-canvas](https://github.com/LearnBoost/node-canvas). You need to install some modules on your system before being able to use it: [Wiki of node-canvas](https://github.com/LearnBoost/node-canvas/wiki/_pages).
-
 ## How to use it:
 
-In your **book.json**:
+This module is automatically added to all books on [GitBook.com](https://www.gitbook.com). For local installation, add it to your `book.json`:
 
-```
+```js
 {
     "plugins": ["autocover"],
     "pluginsConfig": {
@@ -26,6 +18,13 @@ In your **book.json**:
 }
 ```
 
+And run `gitbook install` to fetch and prepare all plugins.
+
+## Installation of `canvas`
+
+This module use [node-canvas](https://github.com/LearnBoost/node-canvas). You need to install some modules on your system before being able to use it: [Wiki of node-canvas](https://github.com/LearnBoost/node-canvas/wiki/_pages).
+
+
 ## Configuration
 
 Here is default configuration of **autocover**, you can change it in your book.json:
@@ -34,17 +33,21 @@ Here is default configuration of **autocover**, you can change it in your book.j
 {
     "title": "My Book",
     "author": "Author",
-    "font": {
-        "size": null,
-        "family": "Impact",
-        "color": "#FFF"
-    },
-    "size": {
-        "w": 1800,
-        "h": 2360
-    },
-    "background": {
-        "color": "#09F"
+    "pluginsConfig": {
+        "autocover": {
+            "font": {
+                "size": null,
+                "family": "Impact",
+                "color": "#FFF"
+            },
+            "size": {
+                "w": 1800,
+                "h": 2360
+            },
+            "background": {
+                "color": "#09F"
+            }
+        }
     }
 }
 ```

@@ -2,7 +2,7 @@
     "name": "gitbook-plugin-autocover",
     "description": "Generate a cover for a gitbook",
     "main": "./lib/index.js",
-    "version": "1.2.1",
+    "version": "2.0.0",
     "engines": {
         "gitbook": ">=3.0.0"
     },

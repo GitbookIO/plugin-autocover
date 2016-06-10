@@ -5,7 +5,7 @@ Generate a cover for the book.
 
 ## How to use it:
 
-This module is automatically added to all books on [GitBook.com](https://www.gitbook.com). For local installation, add it to your `book.json`:
+To use this plugin in your book, add it to your `book.json`:
 
 ```js
 {

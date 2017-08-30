@@ -5,6 +5,11 @@
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink">
 
+  <rect
+    fill="<%= background.color %>"
+    height="100%"
+    width="100%"/>
+
   <text
     y="10%"
     text-anchor="middle"

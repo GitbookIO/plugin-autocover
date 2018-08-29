@@ -7,7 +7,7 @@ describe('title parts', function () {
             // Title
             'The Swift Programming Language 中文版',
             // Font
-            'Helvetica',
+            'Arial',
             // Boundary dimensions
             1800 * 0.8, // Width
             2360 * 0.1 // Height
